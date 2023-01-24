@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using People.Models;
+using SQLite;
 
 namespace People
 {
@@ -12,11 +14,22 @@ namespace People
 
         public string StatusMessage { get; set; }
 
-        // TODO: Add variable for the SQLite connection
+        //private SQLiteConnection conn;
+        //make it async:
+        private SQLiteAsyncConnection conn;
 
-        private void Init()
+        private async void Init()
         {
-            // TODO: Add code to initialize the repository         
+            if (conn != null)
+                return;
+
+            //conn = new SQLiteConnection(_dbPath);
+            //conn.CreateTable<Person>();
+
+            //make it async:
+
+            conn = new SQLiteAsyncConnection(_dbPath);
+            await conn.CreateTableAsync<Person>();
         }
 
         public PersonRepository(string dbPath)
@@ -24,19 +37,18 @@ namespace People
             _dbPath = dbPath;                        
         }
 
-        public void AddNewPerson(string name)
+        public async void AddNewPerson(string name)
         {            
             int result = 0;
             try
             {
-                // TODO: Call Init()
+                Init();
 
                 // basic validation to ensure a name was entered
                 if (string.IsNullOrEmpty(name))
-                    throw new Exception("Valid name required");
+                    throw new Exception("Please enter a name.");
 
-                // TODO: Insert the new person into the database
-                result = 0;
+                result = await conn.InsertAsync(new Person { Name = name }).ConfigureAwait(false); 
 
                 StatusMessage = string.Format("{0} record(s) added (Name: {1})", result, name);
             }
@@ -47,12 +59,15 @@ namespace People
 
         }
 
-        public List<Person> GetAllPeople()
+        public async Task<List<Person>> GetAllPeopleAsync()
         {
-            // TODO: Init then retrieve a list of Person objects from the database into a list
             try
             {
-                
+                //Call Init() to make sure the DB has been initialized.  
+                Init();
+                List<Person> l = new List<Person>();
+                l  = await conn.Table<Person>().ToListAsync();
+                return l;
             }
             catch (Exception ex)
             {

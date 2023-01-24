@@ -23,8 +23,8 @@ public partial class MainPage : ContentPage
     {
         statusMessage.Text = "";
 
-        List<Person> people = App.PersonRepo.GetAllPeople();
-        peopleList.ItemsSource = people;
+        Task<List<Person>> people = App.PersonRepo.GetAllPeopleAsync();
+        peopleList.ItemsSource = people.Result;
     }
 
 }

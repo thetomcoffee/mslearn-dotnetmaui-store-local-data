@@ -1,3 +1,10 @@
+# thetomcoffee fork notes: 
+
+In order to run this app on iOS, also install the NuGet package SQLitePCLRaw.bundle_green. 
+
+
+
+# Original README info:  
 
 # Contributing
 
