@@ -18,7 +18,7 @@ namespace People
         //make it async:
         private SQLiteAsyncConnection conn;
 
-        private async void Init()
+        private async Task Init()
         {
             if (conn != null)
                 return;
@@ -37,12 +37,12 @@ namespace People
             _dbPath = dbPath;                        
         }
 
-        public async void AddNewPerson(string name)
+        public async Task AddNewPerson(string name)
         {            
             int result = 0;
             try
             {
-                Init();
+                await Init();
 
                 // basic validation to ensure a name was entered
                 if (string.IsNullOrEmpty(name))
@@ -59,15 +59,13 @@ namespace People
 
         }
 
-        public async Task<List<Person>> GetAllPeopleAsync()
+        public async Task<List<Person>> GetAllPeople()
         {
             try
             {
                 //Call Init() to make sure the DB has been initialized.  
-                Init();
-                List<Person> l = new List<Person>();
-                l  = await conn.Table<Person>().ToListAsync();
-                return l;
+                await Init();
+                return await conn.Table<Person>().ToListAsync();
             }
             catch (Exception ex)
             {
