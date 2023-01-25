@@ -74,5 +74,22 @@ namespace People
 
             return new List<Person>();
         }
+
+        public async Task DeletePerson(int id)
+        {
+            int result = 0;
+            try
+            {
+                await Init();
+
+                result = await conn.DeleteAsync(new Person { Id = id }).ConfigureAwait(false);
+
+                StatusMessage = string.Format("Deleted Person");
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to delete {0}. Error: {1}", id, ex.Message);
+            }
+        }
     }
 }

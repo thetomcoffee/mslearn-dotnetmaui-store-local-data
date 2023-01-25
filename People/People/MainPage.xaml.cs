@@ -27,5 +27,17 @@ public partial class MainPage : ContentPage
         peopleList.ItemsSource = people;
     }
 
+    public async void OnDeleteClicked(object sender, EventArgs args)
+    {
+        statusMessage.Text = "";
+
+        Button b = (Button)sender;
+        int id;
+        int.TryParse(b.ClassId, out id);
+
+        await App.PersonRepo.DeletePerson(id);
+        statusMessage.Text = App.PersonRepo.StatusMessage;
+    }
+
 }
 
