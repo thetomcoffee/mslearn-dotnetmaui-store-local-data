@@ -33,7 +33,7 @@ public partial class MainPage : ContentPage
 
         Button b = (Button)sender;
         int id;
-        int.TryParse(b.ClassId, out id);
+        int.TryParse(b.CommandParameter.ToString(), out id);
 
         await App.PersonRepo.DeletePerson(id);
         statusMessage.Text = App.PersonRepo.StatusMessage;

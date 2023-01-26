@@ -40,19 +40,21 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Text="{Binding Id}" />
+                        <Label Text="{Binding Id}"
+                               Grid.Column="0"/>
                         <Label Grid.Column="1" Text="{Binding Name}" />
                         <Button Text="Delete Person"
-                                ClassId="{Binding Id}"
+                                CommandParameter="{Binding Id}"
                                 Clicked="OnDeleteClicked"
                                 IsEnabled="True"
                                 BackgroundColor="Red"
-                                TextColor="White"/>
+                                TextColor="White"
+                                Grid.Column="2"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
